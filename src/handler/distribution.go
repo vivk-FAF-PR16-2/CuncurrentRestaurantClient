@@ -9,7 +9,7 @@ import (
 )
 
 func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
-	var req utils.Request
+	var data utils.DistributionData
 
 	jsonData, err := io.ReadAll(request.Body)
 	if err != nil {
@@ -17,7 +17,7 @@ func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	err = json.Unmarshal(jsonData, &req)
+	err = json.Unmarshal(jsonData, &data)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return

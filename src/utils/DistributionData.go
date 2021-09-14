@@ -1,6 +1,6 @@
 package utils
 
-type Request struct {
+type DistributionData struct {
 	OrderID        int              `json:"order_id"`
 	TableID        int              `json:"table_id"`
 	WaiterID       int              `json:"waiter_id"`
