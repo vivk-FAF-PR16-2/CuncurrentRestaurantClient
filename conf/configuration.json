@@ -1,0 +1,7 @@
+{
+	"dinnerHallAddr"	: ":56565",
+	"kitchenAddr"		: ":56566",
+
+	"distributionRout"	: "/distribution",
+	"orderRout"			: "/order"
+}
