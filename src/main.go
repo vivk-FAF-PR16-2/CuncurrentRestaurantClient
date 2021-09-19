@@ -8,14 +8,20 @@ import (
 	"os"
 	"restaurant_client/src/handler"
 	"restaurant_client/src/utils"
+	"restaurant_client/src/utils/item"
+	"restaurant_client/src/utils/singleton"
 )
 
 const (
-	ConfPath = "./conf/configuration.json"
+	ConfPath  = "./conf/configuration.json"
+	ItemsPath = "./conf/items.json"
 )
 
 func main() {
 	conf := GetConf()
+	container := GetItemContainer()
+
+	singleton.Singleton().Set("items", container)
 
 	http.HandleFunc(conf.DistributionRout, handler.DistributionHandler)
 
@@ -44,4 +50,25 @@ func GetConf() utils.Configuration {
 	}
 
 	return conf
+}
+
+func GetItemContainer() *item.Container {
+	var itemList []item.Item
+
+	itemListFile, _ := os.Open(ItemsPath)
+	defer itemListFile.Close()
+
+	jsonData, err := io.ReadAll(itemListFile)
+	if err != nil {
+		log.Fatalf("exit: %s\n", err.Error())
+		return nil
+	}
+
+	err = json.Unmarshal(jsonData, &itemList)
+	if err != nil {
+		log.Fatalf("exit: %s\n", err.Error())
+		return nil
+	}
+
+	return item.NewContainer(itemList)
 }
