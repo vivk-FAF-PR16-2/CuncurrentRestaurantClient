@@ -1,8 +1,8 @@
-#Dinner Hall
+# Dinner Hall
 
 Network Programming first laboratory work. This repository contains **Dinner Hall** web-server implementation.
 
-##Usage
+## Usage
 
 ```bash
 docker-compose --project-name "[NAME]" up --detach
@@ -12,7 +12,7 @@ docker-compose --project-name "[NAME]" up --detach
 
 ```bash
 docker-compose --project-name "[NAME]" --file "[COMPOSE_FILE_PATH]" \
-                run --publish "[HOST_PORT]:[CONTAINER_PORT]" dinner_hall
+                run --publish "[HOST_PORT]:[CONTAINER_PORT]" --detach dinner_hall
 ```
 
 <small>*...if you want to fully control container run...*</small>
