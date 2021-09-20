@@ -1,8 +1,9 @@
-package handler
+package sendRequest
 
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 )
@@ -26,7 +27,9 @@ func SendRequest(addr string, body []byte) {
 		log.Fatalf("exit: %s\n", err.Error())
 		return
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(response.Body)
 
 	fmt.Println(response.Status)
 

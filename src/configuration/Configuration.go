@@ -1,4 +1,4 @@
-package utils
+package configuration
 
 type Configuration struct {
 	DinnerHallAddr string `json:"dinnerHallAddr"`

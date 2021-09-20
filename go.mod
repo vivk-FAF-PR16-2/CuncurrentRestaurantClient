@@ -1,1 +1,1 @@
-module restaurant_client
+module github.com/vivk-FAF-PR16-2/RestaurantKitchen

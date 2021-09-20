@@ -1,15 +1,15 @@
-package handler
+package distributionRout
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"net/http"
-	"restaurant_client/src/utils"
 )
 
 func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
 	var data utils.DistributionData
+	var response string
 
 	jsonData, err := io.ReadAll(request.Body)
 	if err != nil {
@@ -23,5 +23,5 @@ func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	_, _ = fmt.Fprintf(writer, string(jsonData))
+	http.Error(writer, response, http.StatusOK)
 }
