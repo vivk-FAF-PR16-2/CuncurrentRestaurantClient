@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"restaurant_client/src/handler"
-	"restaurant_client/src/utils"
-	"restaurant_client/src/utils/item"
-	"restaurant_client/src/utils/singleton"
+	"restaurant_client/src/configuration"
+	"restaurant_client/src/distributionRout"
+	"restaurant_client/src/item"
+	"restaurant_client/src/singleton"
 )
 
 const (
@@ -23,7 +23,7 @@ func main() {
 
 	singleton.Singleton().Set("items", container)
 
-	http.HandleFunc(conf.DistributionRout, handler.DistributionHandler)
+	http.HandleFunc(conf.DistributionRout, distributionRout.DistributionHandler)
 
 	err := http.ListenAndServe(conf.DinnerHallAddr, nil)
 	if err != nil {
@@ -31,11 +31,13 @@ func main() {
 	}
 }
 
-func GetConf() utils.Configuration {
-	var conf utils.Configuration
+func GetConf() configuration.Configuration {
+	var conf configuration.Configuration
 
 	confFile, _ := os.Open(ConfPath)
-	defer confFile.Close()
+	defer func(confFile *os.File) {
+		_ = confFile.Close()
+	}(confFile)
 
 	jsonData, err := io.ReadAll(confFile)
 	if err != nil {
@@ -56,7 +58,9 @@ func GetItemContainer() *item.Container {
 	var itemList []item.Item
 
 	itemListFile, _ := os.Open(ItemsPath)
-	defer itemListFile.Close()
+	defer func(itemListFile *os.File) {
+		_ = itemListFile.Close()
+	}(itemListFile)
 
 	jsonData, err := io.ReadAll(itemListFile)
 	if err != nil {
