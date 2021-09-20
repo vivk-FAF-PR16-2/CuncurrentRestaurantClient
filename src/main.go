@@ -2,14 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionRout"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/singleton"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"restaurant_client/src/configuration"
-	"restaurant_client/src/distributionRout"
-	"restaurant_client/src/item"
-	"restaurant_client/src/singleton"
 )
 
 const (

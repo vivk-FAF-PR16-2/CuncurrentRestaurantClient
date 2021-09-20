@@ -1,6 +1,6 @@
 {
-	"dinnerHallAddr"	: ":56565",
-	"kitchenAddr"		: ":56566",
+	"dinnerHallAddr"	: "127.0.0.1:56565",
+	"kitchenAddr"		: "127.0.0.1:56566",
 
 	"distributionRout"	: "/distribution",
 	"orderRout"			: "/order"

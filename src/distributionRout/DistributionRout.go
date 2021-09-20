@@ -2,9 +2,9 @@ package distributionRout
 
 import (
 	"encoding/json"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"net/http"
-	"restaurant_client/src/utils"
 )
 
 func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
