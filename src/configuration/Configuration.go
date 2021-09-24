@@ -6,4 +6,12 @@ type Configuration struct {
 
 	DistributionRout string `json:"distributionRout"`
 	OrderRout        string `json:"orderRout"`
+
+	MinOrderItems int `json:"min_order_items"`
+	MaxOrderItems int `json:"max_order_items"`
+
+	MinPriority int `json:"min_priority"`
+	MaxPriority int `json:"max_priority"`
+
+	MaxWaitMultiplier float32 `json:"max_wait_multiplier"`
 }
