@@ -2,7 +2,6 @@ package sendRequest
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -30,7 +29,4 @@ func SendRequest(addr string, body []byte) {
 	defer func(Body io.ReadCloser) {
 		_ = Body.Close()
 	}(response.Body)
-
-	fmt.Println(response.Status)
-
 }
