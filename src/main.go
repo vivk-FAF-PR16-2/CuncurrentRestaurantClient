@@ -3,13 +3,17 @@ package main
 import (
 	"encoding/json"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionRout"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
-	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/singleton"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/table"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/tableIdCounter"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/waiter"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 const (
@@ -21,7 +25,32 @@ func main() {
 	conf := GetConf()
 	container := GetItemContainer()
 
-	singleton.Singleton().Set("items", container)
+	configuration.TimeUnit = time.Second * time.Duration(5)
+	manager := tableIdCounter.New()
+
+	var tables = make([]*table.Table, conf.TableCount)
+	for index := range tables {
+		tables[index] = table.New(index, manager, container, &conf)
+	}
+
+	var waiters = make([]*waiter.Waiter, conf.WaiterCount)
+	for index := range waiters {
+		waiters[index] = waiter.New(index, &conf)
+	}
+
+	distributionManager.SetWaiters(waiters)
+
+	for i, e := range tables {
+		waiters[i%conf.WaiterCount].AddTable(e)
+	}
+
+	for index := range tables {
+		go tables[index].Run()
+	}
+
+	for index := range waiters {
+		go waiters[index].Run()
+	}
 
 	http.HandleFunc(conf.DistributionRout, distributionRout.DistributionHandler)
 
