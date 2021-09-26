@@ -2,6 +2,7 @@ package distributionRout
 
 import (
 	"encoding/json"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"net/http"
@@ -23,5 +24,6 @@ func DistributionHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	distributionManager.PushQueue(&data)
 	http.Error(writer, response, http.StatusOK)
 }
