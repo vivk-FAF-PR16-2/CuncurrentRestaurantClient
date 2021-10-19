@@ -28,7 +28,9 @@ func main() {
 
 	rate := ratingSystem.New()
 
-	configuration.TimeUnit = time.Second * time.Duration(5)
+	timeUnitMillisecondMultiplier := time.Duration(conf.TimeUnitMillisecondMultiplier)
+	configuration.TimeUnit = time.Millisecond * timeUnitMillisecondMultiplier
+
 	manager := tableIdCounter.New()
 
 	var tables = make([]*table.Table, conf.TableCount)
