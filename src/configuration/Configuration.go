@@ -7,8 +7,6 @@ type Configuration struct {
 	DistributionRout string `json:"distribution_rout"`
 	OrderRout        string `json:"order_rout"`
 
-	TimeUnitMod float32 `json:"time_unit_mod"`
-
 	TableCount  int `json:"table_count"`
 	WaiterCount int `json:"waiter_count"`
 
@@ -22,4 +20,6 @@ type Configuration struct {
 	MaxPriority int `json:"max_priority"`
 
 	MaxWaitMultiplier float32 `json:"max_wait_multiplier"`
+
+	TimeUnitMillisecondMultiplier int `json:"time_unit_millisecond_multiplier"`
 }
