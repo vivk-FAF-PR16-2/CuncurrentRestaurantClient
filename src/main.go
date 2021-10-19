@@ -6,6 +6,7 @@ import (
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionRout"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/ratingSystem"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/table"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/tableIdCounter"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/waiter"
@@ -24,6 +25,8 @@ const (
 func main() {
 	conf := GetConf()
 	container := GetItemContainer()
+
+	rate := ratingSystem.New()
 
 	configuration.TimeUnit = time.Second * time.Duration(5)
 	manager := tableIdCounter.New()
@@ -45,6 +48,7 @@ func main() {
 	}
 
 	for index := range tables {
+		tables[index].SetRatingSystem(rate)
 		go tables[index].Run()
 	}
 
