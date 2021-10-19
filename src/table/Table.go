@@ -2,9 +2,11 @@ package table
 
 import (
 	"errors"
+	"fmt"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/random"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/ratingSystem"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/tableIdCounter"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"math/rand"
@@ -30,6 +32,7 @@ type Table struct {
 	manager *tableIdCounter.TableIdCounter
 	menu    *item.Container
 	conf    *configuration.Configuration
+	rate    *ratingSystem.RatingSystem
 }
 
 func New(
@@ -99,7 +102,10 @@ func (table *Table) FinishMakeOrder(waiterId int) (*utils.OrderData, error) {
 		}
 
 		items[i] = tab.Id
-		maxWait += tab.PreparationTime
+
+		if maxWait < tab.PreparationTime {
+			maxWait = tab.PreparationTime
+		}
 	}
 
 	finalMaxWait := float32(maxWait) * table.conf.MaxWaitMultiplier
@@ -121,7 +127,18 @@ func (table *Table) FinishMakeOrder(waiterId int) (*utils.OrderData, error) {
 func (table *Table) GetOrder(dist *utils.DistributionData) {
 	<-table.orderStatus
 
-	// TODO: Calculate note
+	now := time.Now().Unix()
+	rating := ratingSystem.Calculate(dist.PickUpTime, now, dist.MaxWait)
+
+	fmt.Printf("%s = %d\n", "Raiting for order", rating)
+
+	table.rate.Add(rating)
+
+	fmt.Printf("%s = %f\n", "Raiting for all", table.rate.Return())
+}
+
+func (table *Table) SetRatingSystem(rate *ratingSystem.RatingSystem) {
+	table.rate = rate
 }
 
 // endregion
