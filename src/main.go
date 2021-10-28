@@ -1,10 +1,11 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/application"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
-	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionRout"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/ratingSystem"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/table"
@@ -12,8 +13,9 @@ import (
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/waiter"
 	"io"
 	"log"
-	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -58,12 +60,17 @@ func main() {
 		go waiters[index].Run()
 	}
 
-	http.HandleFunc(conf.DistributionRout, distributionRout.DistributionHandler)
+	isDone := make(chan os.Signal)
+	signal.Notify(isDone, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	err := http.ListenAndServe(conf.DinnerHallAddr, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	_, cancel := context.WithCancel(context.Background())
+
+	mainApp := application.New(conf)
+	go mainApp.Start()
+
+	<-isDone
+	cancel()
+	mainApp.Shutdown()
 }
 
 func GetConf() configuration.Configuration {
