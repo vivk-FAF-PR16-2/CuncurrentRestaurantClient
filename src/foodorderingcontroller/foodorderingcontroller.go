@@ -102,6 +102,12 @@ func (c *foodOrderingController) Get(id int) (dto.OrderStatusData, error) {
 		preparedTime = 0
 	}
 
+	defer func() {
+		if isReady {
+			c.removeOrder(id)
+		}
+	}()
+
 	orderStatus := dto.OrderStatusData{
 		OrderId:              orderData.order.OrderID,
 		IsReady:              isReady,
@@ -129,4 +135,13 @@ func (c *foodOrderingController) findIndex(id int) int {
 	}
 
 	return resultIndex
+}
+
+func (c *foodOrderingController) removeOrder(id int) {
+	index := c.findIndex(id)
+	if index == -1 {
+		return
+	}
+
+	c.orders = append(c.orders[:index], c.orders[index+1:]...)
 }
