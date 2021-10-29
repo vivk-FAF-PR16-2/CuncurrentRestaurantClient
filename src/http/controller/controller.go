@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/domain/dto"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"log"
@@ -55,4 +56,23 @@ func (c *controller) distribution(ctx *gin.Context) {
 
 	distributionManager.PushQueue(&data)
 	ctx.JSON(http.StatusOK, nil)
+}
+
+func (c *controller) foodOrder(ctx *gin.Context) {
+	var inData dto.OrderInData
+	var outData dto.OrderOutData
+
+	err := json.NewDecoder(ctx.Request.Body).Decode(&inData)
+	if err != nil {
+		message := fmt.Sprintf("error from `%s` route: %v\n", c.conf.FoodOrderRout, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": message,
+		})
+		log.Panic(message)
+		return
+	}
+
+	// TODO: `order out data` calculation
+
+	ctx.JSON(http.StatusOK, &outData)
 }
