@@ -7,6 +7,7 @@ import (
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/domain/dto"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/foodorderingcontroller"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"log"
@@ -72,7 +73,8 @@ func (c *controller) foodOrder(ctx *gin.Context) {
 		return
 	}
 
-	// TODO: `order out data` calculation
+	foodOrdering := foodorderingcontroller.Get()
+	outData = foodOrdering.Add(inData)
 
 	ctx.JSON(http.StatusOK, &outData)
 }
