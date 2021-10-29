@@ -7,6 +7,11 @@ type Configuration struct {
 	DistributionRout string `json:"distribution_rout"`
 	OrderRout        string `json:"order_rout"`
 
+	FoodOrderRout   string `json:"food_order_rout"`
+	FoodOrderIdRout string `json:"food_order_id_rout"`
+
+	RestaurantId int `json:"restaurant_id"`
+
 	TableCount  int `json:"table_count"`
 	WaiterCount int `json:"waiter_count"`
 
