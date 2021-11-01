@@ -7,6 +7,7 @@ import (
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/foodorderingcontroller"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/foodorderingregister"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/item"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/ratingSystem"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/table"
@@ -37,6 +38,7 @@ func main() {
 	manager := tableIdCounter.New()
 
 	foodorderingcontroller.Get().Setup(manager, &conf)
+	foodorderingregister.Register(conf, *container)
 
 	var tables = make([]*table.Table, conf.TableCount)
 	for index := range tables {
