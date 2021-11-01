@@ -30,6 +30,7 @@ func NewController(conf configuration.Configuration) IController {
 
 func (c *controller) RegisterRoutes(r *gin.Engine) {
 	r.POST(c.conf.DistributionRout, c.distribution)
+	r.POST(c.conf.OrderV2Rout, c.foodOrder)
 }
 
 func (c *controller) distribution(ctx *gin.Context) {
