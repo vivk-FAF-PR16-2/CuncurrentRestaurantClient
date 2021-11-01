@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/configuration"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/distributionManager"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/domain/dto"
+	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/foodorderingcontroller"
 	"github.com/vivk-FAF-PR16-2/RestaurantKitchen/src/utils"
 	"io"
 	"log"
@@ -28,6 +30,7 @@ func NewController(conf configuration.Configuration) IController {
 
 func (c *controller) RegisterRoutes(r *gin.Engine) {
 	r.POST(c.conf.DistributionRout, c.distribution)
+	r.POST(c.conf.OrderV2Rout, c.foodOrder)
 }
 
 func (c *controller) distribution(ctx *gin.Context) {
@@ -55,4 +58,24 @@ func (c *controller) distribution(ctx *gin.Context) {
 
 	distributionManager.PushQueue(&data)
 	ctx.JSON(http.StatusOK, nil)
+}
+
+func (c *controller) foodOrder(ctx *gin.Context) {
+	var inData dto.OrderInData
+	var outData dto.OrderOutData
+
+	err := json.NewDecoder(ctx.Request.Body).Decode(&inData)
+	if err != nil {
+		message := fmt.Sprintf("error from `%s` route: %v\n", c.conf.FoodOrderRout, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": message,
+		})
+		log.Panic(message)
+		return
+	}
+
+	foodOrdering := foodorderingcontroller.Get()
+	outData = foodOrdering.Add(inData)
+
+	ctx.JSON(http.StatusOK, &outData)
 }
