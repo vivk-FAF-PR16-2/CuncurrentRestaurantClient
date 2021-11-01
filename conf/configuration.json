@@ -5,6 +5,11 @@
 	"distribution_rout"	: "/distribution",
 	"order_rout"		: "/order",
 
+	"restaurant_id"      : 1,
+	"restaurant_name"    : "volcov's restaurant",
+	"restaurant_rating"  : 3.7,
+	"food_ordering_addr" : "food_ordering:56540",
+
 	"table_count"		: 6,
 	"waiter_count"		: 3,
 

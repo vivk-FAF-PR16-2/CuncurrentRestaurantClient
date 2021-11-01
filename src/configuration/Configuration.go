@@ -10,7 +10,10 @@ type Configuration struct {
 	FoodOrderRout   string `json:"food_order_rout"`
 	FoodOrderIdRout string `json:"food_order_id_rout"`
 
-	RestaurantId int `json:"restaurant_id"`
+	RestaurantId     int     `json:"restaurant_id"`
+	RestaurantName   string  `json:"restaurant_name"`
+	RestaurantRating float32 `json:"restaurant_rating"`
+	FoodOrderingAddr string  `json:"food_ordering_addr"`
 
 	TableCount  int `json:"table_count"`
 	WaiterCount int `json:"waiter_count"`
