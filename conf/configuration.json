@@ -5,6 +5,7 @@
 	"distribution_rout"	: "/distribution",
 	"order_rout"		: "/order",
 	"order_v2_rout"		: "/v2/order",
+	"order_id_v2_rout"	: "/v2/order/:id",
 
 	"restaurant_id"      : 1,
 	"restaurant_name"    : "volcov's restaurant",

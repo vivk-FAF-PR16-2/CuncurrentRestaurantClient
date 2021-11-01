@@ -12,6 +12,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type IController interface {
@@ -31,6 +32,7 @@ func NewController(conf configuration.Configuration) IController {
 func (c *controller) RegisterRoutes(r *gin.Engine) {
 	r.POST(c.conf.DistributionRout, c.distribution)
 	r.POST(c.conf.OrderV2Rout, c.foodOrder)
+	r.GET(c.conf.OrderIDV2Rout)
 }
 
 func (c *controller) distribution(ctx *gin.Context) {
@@ -78,4 +80,32 @@ func (c *controller) foodOrder(ctx *gin.Context) {
 	outData = foodOrdering.Add(inData)
 
 	ctx.JSON(http.StatusOK, &outData)
+}
+
+func (c *controller) getFoodOrder(ctx *gin.Context) {
+	var statusData dto.OrderStatusData
+
+	idString := ctx.Param("id")
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		message := fmt.Sprintf("error from `%s` route: %v\n", c.conf.OrderIDV2Rout, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": message,
+		})
+		log.Panic(message)
+		return
+	}
+
+	foodOrdering := foodorderingcontroller.Get()
+	statusData, err = foodOrdering.Get(id)
+	if err != nil {
+		message := fmt.Sprintf("error from `%s` route: %v\n", c.conf.OrderIDV2Rout, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": message,
+		})
+		log.Panic(message)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &statusData)
 }
